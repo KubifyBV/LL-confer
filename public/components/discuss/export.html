@@ -1,0 +1,84 @@
+<discuss-user></discuss-user>
+
+<div ng-show="ExpCtrl.episode">
+
+    <ul class='list-unstyled'>
+        <li ng-repeat="export in ExpCtrl.exports">
+            <input type="checkbox" ng-model="export.value">&nbsp; {{export.title}}
+            <div style="border-left: 3px grey solid; marging-left: 5px; padding-left: 5px;" ng-show="export.value && export.options.length > 0">
+                <ul class='list-unstyled'>
+                    <li class="" ng-repeat="option in export.options">
+                        <input type="checkbox" ng-model="option.value">&nbsp; {{option.title}}
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+    <div>
+        <h1>{{ExpCtrl.episode.title}}</h1>
+        <div><span class="fa fa-envelope-o"></span> <a href="mailto:{{ExpCtrl.episode.mail_slug}}@confer.zone">{{ExpCtrl.episode.mail_slug}}@confer.zone</a></div>
+
+        <h3>Workgroup Members</h3>
+        <div>
+            <ul class="list-unstyled">
+                <li ng-repeat="(slug, member) in ExpCtrl.episode.members">
+                    {{member.username}} [{{member.email}}]
+                </li>
+            </ul>
+        <div>
+
+    </div>
+
+    <div ng-repeat="report in ExpCtrl.report">
+        <h3>{{report.title}}</h3>
+        
+        <div class="alert alert-warning" ng-show="ExpCtrl.count(report.items[report.stage]) == 0">
+            There is no content for this stage
+        </div>
+        <div ng-repeat="item_id in ExpCtrl.report.sections[stage].items" ng-init="top=true" ng-include="'render-export-item.html'"></div>
+
+    </div>
+        
+</div>
+
+<script type="text/ng-template" id="render-export-item.html">
+    <div class="panel panel-{{top?'primary':'default'}}" >
+        <div class="panel-heading">{{ExpCtrl.items[item_id].title}}</div>
+        <div class="panel-body">
+            <div>{{ExpCtrl.items[item_id].body}}</div>
+            <span ng-repeat="tag in ExpCtrl.items[item_id].labels[ExpCtrl.items[item_id].stage]">
+                <span class="label label-default" >{{tag.text}}</span>
+            </span>
+            <br />
+            <div class="panel panel-default" ng-show="ExpCtrl.items[item_id].links">
+                <div class="panel-heading">
+                    <span>Items and links</span>
+                </div>
+                <a ng-repeat="link in ExpCtrl.items[item_id].links" class="item-link" href="{{link.url}}" filetype="{{link.url|extension}}"  target="_blank">
+                    <span class="icon-corner"></span>
+                    {{link.title}}
+                </a>
+            </div>
+    
+            
+            <div class="panel panel-info" ng-show="ExpCtrl.items[item_id].annotations">
+                <div class="panel-heading">Resources</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li style="margin-left: 15px;" ng-init="top=false" ng-repeat="item_id in ExpCtrl.items[item_id].annotations" ng-include="'render-export-item.html'"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="panel panel-info" ng-show="ExpCtrl.items[item_id].grouped">
+                <div class="panel-heading">Background</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li style="margin-left: 15px;" ng-init="top=false" ng-repeat="item_id in ExpCtrl.items[item_id].grouped" ng-include="'render-export-item.html'"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

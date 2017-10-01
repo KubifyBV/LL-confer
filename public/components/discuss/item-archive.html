@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-xs-6">
+        <select size="4"
+                class="form-control" 
+                ng-options="diff_item_left as diff_item_left.label for diff_item_left in ColCtrl.archive[item.slug]"
+                ng-change="ColCtrl.diff_change(item.slug);"
+                ng-model="ColCtrl.diff_left[item.slug]" ></select>
+    </div>
+    <div class="col-xs-6">
+        <select size="4" 
+                class="form-control" 
+                ng-options="diff_item_right as diff_item_right.label for diff_item_right in ColCtrl.archive[item.slug] | rightarchive:ColCtrl.diff_left[item.slug]"
+                ng-change="ColCtrl.diff_change(item.slug);"
+                ng-model="ColCtrl.diff_right[item.slug]"
+                ng-show="ColCtrl.diff_left[item.slug]"></select>
+    </div>
+</div>
+<hr />
+<div class="panel panel-default">
+    <div class="panel-body" ng-bind-html="ColCtrl.diff[item.slug]"></div>
+</div>

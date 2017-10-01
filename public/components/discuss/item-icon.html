@@ -1,0 +1,22 @@
+<div    class="btn btn-default btn-draggable"
+        data-drag="((EpiCtrl.section.settings.items.group_for_stage === item_icon.stage && !item._id))?true:false" 
+        data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
+        ng-model="item_icon" 
+        itemid="{{item_icon._id}}"
+        jqyoui-draggable="{index: {{$index}},placeholder:'keep'}"
+        ng-click="ColCtrl.modalItem(item_icon, ($parent.edit !== false && EpiCtrl.section.phase===EpiCtrl.getSectionbyStage(item_icon.stage).phase)?true:false); "
+        tooltip="{{item_icon.title}}"
+     >
+    <div class="btn-group pull-right">
+        <button type="button" class="btn btn-default btn-xs"
+            ng-show="item._id && EpiCtrl.section.settings.items.group_for_stage"
+            ng-click="ColCtrl.groupItem(item_icon, item._id, true);">
+            <span class="fa fa-times"></span>
+        </button>
+    </div>
+    <div style="overflow:hidden"><i ng-class="ColCtrl.typeClass(item_icon)"></i> {{item_icon.title}}</div></div>
+
+
+
+
+

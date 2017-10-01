@@ -1,0 +1,29 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.6.10\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl\n"
+
+#: app/modules/home/home.html
+msgid "My Stacks"
+msgstr "Mijn Sets"
+
+#: app/modules/home/home.html
+msgid "My Tiles"
+msgstr "Mijn Tegels"
+
+#: app/modules/view1/view1.html
+msgid ""
+"Showing of 'interpolate' filter:\r\n"
+"    {{ 'Current version is v%VERSION%.' | interpolate }}"
+msgstr ""
+"Tonen van 'interpolate' filter:  {{ 'Huidige versie is v%VERSION%.' |"
+"interpolate }}"

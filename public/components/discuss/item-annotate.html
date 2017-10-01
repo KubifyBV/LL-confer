@@ -1,0 +1,48 @@
+<div ng-class="ColCtrl.itemClass(annotate_item)">
+    
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            
+            <span >{{annotate_item.title}}</span>
+
+        </div>
+
+        <div class="panel-body" ng-show="!ColCtrl.show_archive[annotate_item.slug]">
+            {{annotate_item.body}}
+        </div>
+
+        <div class="panel-body" ng-show="filteredGroups.length">
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <span>Background</span>                    
+                </div>
+                <div class="panel-body">
+                    <discuss-item-icon ng-repeat="item_icon in filteredGroups = ColCtrl.filterGroupList(ColCtrl.group_items, annotate_item._id)"></discuss-item-icon>                    
+                    
+                </div>
+            </div>
+        </div>
+            
+        <div class="panel-body">
+            
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button id="createButton" ng-click="ColCtrl.createItem({annotate: annotate_item._id})" class="btn btn-xs btn-default pull-right"><span class="fa fa-plus-circle"></span></button>
+                    <span>Resources</span>
+                    
+                </div>
+                <div class="panel-body" 
+                 data-drop="true" 
+                ng-model="ColCtrl.draglist"
+                annotate="{{annotate_item._id}}"
+                data-jqyoui-options="{}" 
+                jqyoui-droppable="{multiple:true, onDrop:'ColCtrl.annotateDropCallback' }">
+                    <discuss-item-icon ng-repeat="item_icon in filteredAnnotations = ColCtrl.filterAnnotateList(ColCtrl.items, annotate_item._id)"></discuss-item-icon>
+                    <span class="text-muted" ng-hide="filteredAnnotations.length">Create resource items here</span>
+                </div>
+           </div>
+            
+        </div>
+
+    </div>
+</div>

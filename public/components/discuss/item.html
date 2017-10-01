@@ -1,0 +1,173 @@
+<div id="item_{{item._id}}"
+     ng-class="ColCtrl.itemClass(item)"
+     item="item" >
+    
+    <div class="btn-group-vertical pull-right" style="margin-top: 1px;">
+                
+        
+        <div ng-show="!item.deleted && EpiCtrl.section.settings.items.promote_to_stage && EpiCtrl.section.settings.items.promote_to_stage.length > 0" 
+             class="btn-group"
+             dropdown
+             is-open="item.isopen">
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                 <i class="fa fa-share-square-o"></i>
+            </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li ng-repeat="section in ColCtrl.promoteSectionList()">
+                    <a class="fa fa-sign-out" ng-click="ColCtrl.promoteItem(item, section);"> {{section.title}}</a>
+                </li>
+            </ul>
+        </div>
+        
+        
+        
+        
+        <button type="button" class="btn btn-default btn-xs"
+                ng-show="EpiCtrl.section.settings.discussion"
+                ng-click="ColCtrl.toggleItemMessages(item)">
+            <span class="fa {{(ColCtrl.showItem && ColCtrl.showItem._id === item._id)?'fa-times':'fa-comments-o'}}" ng-show="!ColCtrl.new_message_counts[item.slug]"></span>
+            <span class="badge" ng-show="ColCtrl.new_message_counts[item.slug]">{{ColCtrl.new_message_counts[item.slug]}}</span>
+        
+        </button>
+        
+        <button  type="button" class="btn btn-default btn-xs" 
+                 tooltip="undelete item"
+                 ng-show="item.deleted && !item.fixed && !ColCtrl.show_archive[item.slug] && !(ColCtrl.showItem && ColCtrl.showItem._id === item._id)"
+                 ng-click="ColCtrl.undeleteItem(item)"><span class="fa fa-undo"></span>
+        </button>
+        
+        <button type="button" class="btn btn-default btn-xs"
+                tooltip="{{ColCtrl.show_archive[item.slug]?'close history':'show history'}}"
+                ng-show="!EpiCtrl.section.settings.discussion || (ColCtrl.showItem && ColCtrl.showItem._id === item._id)"
+                ng-click="ColCtrl.toggleArchive(item.slug)">
+            <span ng-show="!ColCtrl.show_archive[item.slug]" class="fa fa-history"></span>
+            <span ng-show="ColCtrl.show_archive[item.slug]" class="fa fa-pencil-square-o"></span>
+        </button>
+
+        <button  type="button" class="btn btn-default btn-xs" 
+                 tooltip="delete item"
+                 ng-show="!item.deleted && !item.fixed && !ColCtrl.show_archive[item.slug] && !(ColCtrl.showItem && ColCtrl.showItem._id === item._id)"
+                 ng-click="ColCtrl.deleteItem(item)"><span class="fa fa-trash-o"></span>
+        </button>
+
+        <button  type="button" class="btn btn-default btn-xs" 
+                 tooltip="duplicate item"
+                 ng-show=" EpiCtrl.section.settings.items.duplicate && !item.deleted && !item.fixed && !ColCtrl.show_archive[item.slug] && !(ColCtrl.showItem && ColCtrl.showItem._id === item._id)"
+                 ng-click="ColCtrl.duplicateItem(item)"><span class="fa fa-clone"></span>
+        </button>
+    </div>
+    <div class="panel panel-{{EpiCtrl.getPhaseClass('primary')}}">
+        <div class="panel-heading item-heading" tooltip="{{item.title}}">
+            <div class="input-group">
+                <span class="input-group-addon  discuss-item-title"><i ng-class="ColCtrl.typeClass(item)"></i></span>
+                <input type="text" 
+                    class="form-control discuss-item-title" 
+                    placeholder="{{item.deleted?'No title':'Add a title'}}"
+                    ng-model="item.title"
+                    focus-on="{{item.slug}}"
+                    ng-change="ColCtrl.updateItem(item)"
+                    ng-disabled="item.fixed || item.deleted || ColCtrl.show_archive[item.slug]">
+            </div>
+            
+            
+        </div>
+
+        <div class="panel-body" ng-show="!ColCtrl.show_archive[item.slug]">
+            <div class="bg-default" ng-show="item.promotion" tooltip="Promoted from {{EpiCtrl.getSectionbyStage(item.promotion.orig_stage).title}} by {{item.promotion.username}} on {{item.promotion.promoted|date:'MMM d, H:mm:ss':'CET'}}">
+                <small>Promoted from <strong>{{EpiCtrl.getSectionbyStage(item.promotion.orig_stage).title}}</strong></small>
+            </div>
+            
+            <textarea placeholder="{{item.deleted?'No content':'Add content'}}" 
+                      msd-elastic="\n" 
+                      ng-model="item.body" 
+                      ng-change="ColCtrl.updateItem(item)" 
+                      class="form-control discuss-item-body"
+                      ng-disabled="item.deleted"></textarea>
+            
+        
+        </div>
+        
+        <!--Tags-->
+        <div class="panel-body" ng-show="!item.deleted && EpiCtrl.section.settings.items.tagging">
+            
+            <tags-input 
+                on-tag-adding="ColCtrl.item_prepare_tags(item, EpiCtrl.stage)"
+                on-tag-added="ColCtrl.item_tags($tag, true, item, EpiCtrl.stage);"
+                on-tag-removed="ColCtrl.item_tags($tag, false, item, EpiCtrl.stage);"
+                ng-model="item.labels[EpiCtrl.stage]"></tags-input>
+        </div>
+        
+        <!--Items and Links-->
+        <div
+            class="panel-body" 
+            ng-show="((item.links && item.links.length) || ColCtrl.findLinksInText(item.body, true)) && !ColCtrl.show_archive[item.slug]">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span>Items and links</span>
+                </div>
+                
+                <a ng-repeat="link in ColCtrl.findLinksInText(item.body)" class="item-link" href="{{link}}" filetype="url"  target="_blank">
+                    <span class="icon-corner"></span>
+                    {{link}}
+                </a>
+                
+                <a ng-repeat="link in item.links" class="item-link" href="{{link.url}}" filetype="{{link.url|extension}}"  target="_blank">
+                    <span class="icon-corner"></span>
+                    {{link.title}}
+                </a>
+            </div>
+        </div>
+  
+        <!--Comments-->
+        <div class="panel-body" ng-show="EpiCtrl.section.settings.items.comment_for_stage && !ColCtrl.show_archive[item.slug]">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span>{{EpiCtrl.section.settings.items.comment_question}}</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row" ng-repeat="(index, item_icon) in ColCtrl.comment_items">
+                        <discuss-item-comment ng-repeat="item_comment in item_comment_list = ColCtrl.findComments(item._id, item_icon._id)" ng-show="item_comment"></discuss-item-comment>
+                        <div ng-show="!item_comment_list.length">
+                            <div class="col-sm-6">
+                                <discuss-item-icon></discuss-item-icon>
+                            </div>
+                            <div class="col-sm-6" 
+                                 ng-show="!item.deleted"
+                                 ng-click="ColCtrl.addCommentItem(item._id, item_icon._id, 'comment: '+item_icon.title)">
+                                <span class="fa fa-plus-circle"></span> add
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--Archive-->
+        <div class="panel-body" ng-show="ColCtrl.show_archive[item.slug]">
+            <discuss-item-archive></discuss-item-archive>
+        </div>
+
+        
+        <!--Group-->
+        <div class="panel-body" ng-show="EpiCtrl.section.settings.items.group_for_stage">
+             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span ng-click="ColCtrl.createItem({}, EpiCtrl.getSectionbyStage(EpiCtrl.section.settings.items.group_for_stage), item._id)" 
+                          class="pull-right fa fa-plus-circle"></span>
+                    <span>Background</span>
+                </div>
+                <div class="panel-body"
+                    data-drop="!item.deleted" 
+                    ng-model="ColCtrl.draglist"
+                    group="{{item._id}}"
+                    data-jqyoui-options="{}" 
+                    jqyoui-droppable="{multiple:true, onDrop:'ColCtrl.groupDropCallback' }"
+                    placeholder="test">
+                    <discuss-item-icon ng-repeat="item_icon in filteredGroups = ColCtrl.filterGroupList(ColCtrl.group_items, item._id)"></discuss-item-icon>
+                    <span class="text-muted" ng-hide="filteredGroups.length">Drag background items here</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

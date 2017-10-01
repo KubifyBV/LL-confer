@@ -1,0 +1,61 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-info btn-xs"
+                    ng-click="ColCtrl.toggleArchive(item.slug)">
+                <span ng-show="!ColCtrl.show_archive[item.slug]" class="fa fa-history"></span>
+                <span ng-show="ColCtrl.show_archive[item.slug]" class="fa fa-pencil-square-o"></span>
+            </button>
+
+
+            <button  type="button" class="btn btn-default btn-xs" 
+                     ng-show="!item.fixed"
+                     ng-click="ColCtrl.deleteItem(item)"><span class="fa fa-trash-o"></span>
+            </button>
+
+        </div>
+        <div class="input-group" ng-show="!ColCtrl.show_archive[item.slug]">
+            <input type="text" 
+                   class="form-control discuss-item-title" 
+                   ng-model="item.title" 
+                   ng-change="ColCtrl.updateItem(item)" >
+        </div>
+        <span ng-show="ColCtrl.show_archive[item.slug]">{{item.title}}</span>
+
+    </div>
+
+    <div class="panel-body" ng-show="!ColCtrl.show_archive[item.slug]">
+
+        <textarea msd-elastic="\n" ng-model="item.body" ng-change="ColCtrl.updateItem(item)" class="form-control discuss-item-body"></textarea>
+    </div>
+
+    <div class="panel-body" ng-show="ColCtrl.show_archive[item.slug]">
+        <div class="row">
+            <div class="col-xs-6">
+                <select size="4"
+                        class="form-control" 
+                        ng-options="diff_item_left as diff_item_left.label for diff_item_left in ColCtrl.archive[item.slug]"
+                        ng-change="ColCtrl.diff_change(item.slug);"
+                        ng-model="ColCtrl.diff_left[item.slug]" ></select>
+            </div>
+            <div class="col-xs-6">
+                <select size="4" 
+                        class="form-control" 
+                        ng-options="diff_item_right as diff_item_right.label for diff_item_right in ColCtrl.archive[item.slug] | rightarchive:ColCtrl.diff_left[item.slug]"
+                        ng-change="ColCtrl.diff_change(item.slug);"
+                        ng-model="ColCtrl.diff_right[item.slug]"
+                        ng-show="ColCtrl.diff_left[item.slug]"></select>
+            </div>
+        </div>
+        <hr />
+        <div class="panel panel-default">
+            <div class="panel-body" ng-bind-html="ColCtrl.diff[item.slug]"></div>
+        </div>
+
+    </div>
+
+    <div class="panel-body" ng-show="EpiCtrl.section.settings.items.group_for_stage">
+        drop
+    </div>
+
+</div>

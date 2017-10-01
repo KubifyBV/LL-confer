@@ -1,0 +1,98 @@
+
+<div class="btn-group-vertical pull-right"  style="margin-top: 0px;">
+    <button type="button" class="btn btn-default btn-xs"
+        ng-click="cancel();">
+            <span class="fa fa-times"></span>
+        </button>
+    <button type="button" class="btn btn-default btn-xs"
+            ng-click="ColCtrl.toggleArchive(item.slug)"
+            ng-show="edit"
+            >
+        <span ng-show="!ColCtrl.show_archive[item.slug]" class="fa fa-history"></span>
+        <span ng-show="ColCtrl.show_archive[item.slug]" class="fa fa-pencil-square-o"></span>
+    </button>
+    <button  type="button" class="btn btn-default btn-xs" 
+             ng-show="edit && !item.fixed && !ColCtrl.show_archive[item.slug]"
+             ng-click="ColCtrl.deleteItem(item); cancel();"><span class="fa fa-trash-o"></span>
+    </button>
+        
+    <button  type="button" class="btn btn-default btn-xs" 
+             tooltip="duplicate item"
+             ng-show="ColCtrl.allowDuplicate(item) && !item.deleted && !item.fixed && !ColCtrl.show_archive[item.slug]"
+             ng-click="ColCtrl.duplicateItem(item)"><span class="fa fa-clone"></span>
+    </button>
+    
+    
+</div>
+
+<div class="panel panel-{{phaseclass}}" title="{{item.title}}">
+    <div class="panel-heading item-heading" tooltip="{{item.title}}">
+        <div class="input-group">
+            <span class="input-group-addon  discuss-item-title"><i ng-class="ColCtrl.typeClass(item)"></i></span>
+            <input type="text" 
+                class="form-control discuss-item-title" 
+                ng-model="item.title" 
+                autofocus="edit && !ColCtrl.show_archive[item.slug]"
+                placeholder="Add a title"
+                ng-change="ColCtrl.updateItem(item)"
+                ng-disabled="!edit || ColCtrl.show_archive[item.slug]"
+                >
+        </div>
+
+    </div>
+
+    
+    <div class="panel-body" ng-show="!ColCtrl.show_archive[item.slug]">
+        <textarea msd-elastic="\n" 
+                  placeholder="Add content"
+                  ng-model="item.body" 
+                  ng-change="ColCtrl.updateItem(item)" 
+                  ng-disabled="!edit ||  ColCtrl.show_archive[item.slug]"
+                  class="form-control discuss-item-body"></textarea>
+    </div>
+
+    <div class="panel-body" ng-show="edit && ColCtrl.show_archive[item.slug]">
+        <discuss-item-archive></discuss-item-archive>
+    </div>
+    
+    <!--Items and Links-->
+    <div
+        class="panel-body" 
+        ng-show="((item.links && item.links.length) || ColCtrl.findLinksInText(item.body, true)) && !ColCtrl.show_archive[item.slug]">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>Items and links</span>
+            </div>
+
+            <a ng-repeat="link in ColCtrl.findLinksInText(item.body)" class="item-link" href="{{link}}" filetype="url"  target="_blank">
+                <span class="icon-corner"></span>
+                {{link}}
+            </a>
+
+            <a ng-repeat="link in item.links" class="item-link" href="{{link.url}}" filetype="{{link.url|extension}}"  target="_blank">
+                <span class="icon-corner"></span>
+                {{link.title}}
+            </a>
+        </div>
+    </div>
+    
+    <div class="panel-body" ng-show="grouped.length > 0">
+         <div class="panel panel-default" >
+            <div class="panel-heading">
+                <span>Background</span>
+
+            </div>
+            <discuss-item-icon ng-repeat="(item_key, item_icon) in grouped"></discuss-item-icon>                    
+            
+       </div>
+    </div>
+    <div class="panel-body" ng-show="annotations.length > 0">
+         <div class="panel panel-default" >
+            <div class="panel-heading">
+                <span>Resources</span>
+
+            </div>
+            <discuss-item-icon ng-repeat="(item_key, item_icon) in annotations"></discuss-item-icon>                    
+        </div>
+    </div>
+</div>

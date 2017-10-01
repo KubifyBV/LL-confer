@@ -1,0 +1,49 @@
+{    
+    "OIDC" : {
+        "auth": {
+            "public": true,
+            "redirect": "/auth",
+            "provider": "https://api.learning-layers.eu",
+            "provider_path": "/o/oauth2/oauth/authorize",
+            "scope": "email openid profile offline_access",
+            "refresh_access_type": "",
+            "response_type" : "code",
+            "endpoint_protocal": "https",
+            "endpoint": "api.learning-layers.eu",
+            "endpoint_token": "/o/oauth2/token",
+            "endpoint_userinfo": "/o/oauth2/userinfo",
+            "endpoint_logout": "/o/oauth2/logout",
+            "client_id": "d0862d88-2511-413f-a830-c6f9f139c1a2"
+        },
+
+        "auth_private": {
+            "public": false,
+            "client_secret": "D1VJL2Wpjx_igouQ7QjieGVOr2xLJaCH01CN8tbYbiMeCs-9mJvJbeZpwBUFtBPKldoNdCb6_9RF6oWVqgkC-g"
+        }
+    },
+    "google" : {
+        "auth": {
+            "public": true,
+            "redirect": "/auth",
+            "provider": "https://accounts.google.com",
+            "provider_path": "/o/oauth2/auth",
+            "scope": "email%20openid%20profile",
+            "refresh_access_type": "offline",
+            "response_type" : "code",
+            "endpoint_protocal": "https",
+            "endpoint": "www.googleapis.com",
+            "endpoint_token": "/oauth2/v3/token",
+            "endpoint_userinfo": "/oauth2/v3/userinfo",
+            "client_id": "886254564918-borr8v2j65si6li99b9vm0g5vec8imvh.apps.googleusercontent.com"
+        },
+
+        "auth_private": {
+            "public": false,
+            "client_secret": "togvbNy9Jgcwzu_-Fv7Dz5Od"
+        },
+        
+        "drive": {
+            
+        }
+    }
+}

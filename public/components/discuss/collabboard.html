@@ -1,0 +1,186 @@
+<div id="discussFixedBar" discuss-fixed-bar class="discuss-bar container">
+    
+    
+    <div class="navbar-blank {{EpiCtrl.getPhaseClass()}}">
+        <div class="navbar-header">
+            <span class="navbar-brand">{{EpiCtrl.episode.title}}</span>
+            
+            <button ng-init="navCollapsedCollab = true"
+                ng-click="navCollapsedCollab = !navCollapsedCollab"
+                type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-nav">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        
+        <div collapse="navCollapsedCollab" class="collapse navbar-collapse">
+            
+            <ul class="nav navbar-nav navbar-right">
+
+                <li ng-show="!EpiCtrl.Export && EpiCtrl.section.settings.items.add" 
+                    ng-click="ColCtrl.createItem()">
+                    <a>
+                        <span class="text-{{EpiCtrl.getPhaseClass('default')}}">
+                            <span class="fa fa-plus"></span> Create {{EpiCtrl.section.settings.items.label || "Item"}}
+                        </span>
+                    </a>
+                </li>
+                <li ng-show="!EpiCtrl.Export && EpiCtrl.section.settings.items.group_for_stage"
+                    ng-click="ColCtrl.createItem()">
+                    <a>
+                        <span class="text-{{EpiCtrl.getPhaseClass('default')}}">
+                            <span class="fa fa-plus"></span> Create {{EpiCtrl.section.settings.items.label || "Group"}}
+                        </span>
+                    </a>
+                </li>
+                <li ng-show="!EpiCtrl.Export && EpiCtrl.count(ColCtrl.episode_deleted_items[EpiCtrl.section.stage]) > 0"
+                    ng-click="ColCtrl.toggleTrash()">
+                    <a>
+                        <span class="text-{{EpiCtrl.getPhaseClass('default')}}">
+                            <span class="fa fa-trash-o"></span> Deleted items
+                        </span>              
+                    </a>
+                </li>
+                <li ng-show="!EpiCtrl.Export && (EpiCtrl.section.settings.items.add || EpiCtrl.section.settings.items.group_for_stage || EpiCtrl.section.settings.items.annotate_for_stage) && EpiCtrl.section.settings.discussion" 
+                    ng-click="ColCtrl.toggleDiscussion()">
+                    <a>
+                        <span class="text-{{EpiCtrl.getPhaseClass('default')}}">
+                            <span class="fa {{ColCtrl.showMessages?'fa-caret-down':'fa-caret-right'}}"></span>
+                            Discussion <span class="label label-{{EpiCtrl.getPhaseClass('default')}} label-as-badge" ng-show="ColCtrl.new_message_counts[EpiCtrl.section._id]">{{ColCtrl.new_message_counts[EpiCtrl.section._id]}}</span>
+                        </span>
+                    </a>
+                </li>
+ 
+                <li ng-click="EpiCtrl.set_section(EpiCtrl.getSectionbySlug(EpiCtrl.episode.drop_slug).stage); ColCtrl.sectionbar_closeall();"
+                    tooltip="Open the workgroup {{EpiCtrl.getSectionbySlug(EpiCtrl.episode.drop_slug).title}}">
+                    <a>
+                        <span class="text-{{EpiCtrl.getPhaseClass('default')}}">
+                            <span class="fa fa-inbox"></span> {{EpiCtrl.getSectionbySlug(EpiCtrl.episode.drop_slug).title}}
+                        </span>
+                    </a>
+                </li>
+                <li ng-click="EpiCtrl.set_section('info'); ColCtrl.sectionbar_closeall();"
+                    tooltip="Open the workgroup dashboard">
+                    <a>
+                        <span class="text-{{EpiCtrl.getPhaseClass('default')}}">
+                            <span class="fa fa-info-circle"></span> Dashboard
+                        </span>
+                    </a>
+                </li>
+                <li ng-click="MainCtrl.closeworkgroup()"
+                    tooltip="Exit the workgroup">
+                    <a>
+                        <span class="text-{{EpiCtrl.getPhaseClass('default')}}">
+                            <span class="fa fa-sign-out"></span> Exit
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+    
+    
+    <div class="btn-group btn-group-justified" role="group" aria-label="..." ng-show="!EpiCtrl.export">
+        <div ng-repeat="(key, phase) in EpiCtrl.episode.phases | orderObjectBy:'mark'" class="btn-group" role="group">
+          <button type="button" 
+                  class="btn btn-{{(EpiCtrl.getPhase('phase') === phase.phase)?phase.class:''}} {{EpiCtrl.getPhase('phase') === phase.phase?'active':''}} btn-phase"
+                  ng-click="EpiCtrl.set_section(EpiCtrl.firstSectionPhase(phase.phase)); ColCtrl.sectionbar_closeall();"
+                  tooltip="Go to phase {{phase.mark}}">
+              {{phase.mark}}. {{phase.title}}</button>
+        </div>
+    </div>
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+        <div ng-repeat="section in EpiCtrl.sections|filter:EpiCtrl.filterPhase" class="btn-group" role="group">
+          <button type="button" class="btn btn-{{EpiCtrl.episode.phases[section.phase].class}} {{EpiCtrl.stage === section.stage?'active':''}}"
+                  ng-click="EpiCtrl.set_section(section.stage); ColCtrl.sectionbar_closeall();">
+                <span class="fa fa-toggle-{{EpiCtrl.stage === section.stage?'on':'off'}}"></span>&nbsp; {{section.title | capitalize}} 
+                <span ng-show="ColCtrl.showTrash"> [<i class="fa fa-trash"></i>]</span>  
+            </button>
+        </div>
+    </div>
+            
+    <div ng-show="EpiCtrl.section.settings.items.group_for_stage" class="navbar bg-default discuss-topdrag-container">
+        <span popover="Drag the brainstorm items from this bar into the Background area of yor identified issues" 
+                popover-title="Ordering Brainstorm items" 
+                class="fa fa-question-circle"></span>
+        <discuss-item-icon ng-repeat="(key_icon, item_icon) in ColCtrl.filterGroupList(ColCtrl.group_items, false, ColCtrl.items, EpiCtrl.section.settings.items.group_multiple)"></discuss-item-icon>
+    </div>
+    
+    <div ng-show="EpiCtrl.section.settings.items.tagging && !ColCtrl.showTrash" class="" style="opacity:0.8">
+        <a ng-click="ColCtrl.toggleFilterTag();"
+           style="margin-right: 5px;" 
+           class="btn {{(ColCtrl.tag_all_empty && EpiCtrl.count(ColCtrl.filter_tag)===0)?'btn-warning':'btn-default'}} btn-sm" 
+           ng-show="EpiCtrl.count(ColCtrl.tags)">All <span class="badge">{{EpiCtrl.count(ColCtrl.items)}}</span></a>
+        <a ng-click="ColCtrl.toggleFilterTag(false);"
+           style="margin-right: 5px;" 
+           class="btn {{(!ColCtrl.tag_all_empty && EpiCtrl.count(ColCtrl.filter_tag)===0)?'btn-warning':'btn-default'}} btn-sm" 
+           ng-show="ColCtrl.not_tagged > 0 && EpiCtrl.count(ColCtrl.tags)">Untagged <span class="badge">{{ColCtrl.not_tagged}}</span></a>
+           
+        <a ng-click="ColCtrl.toggleFilterTag(key_tag);" 
+           style="margin-right: 5px;" 
+           class="btn {{(ColCtrl.filter_tag[key_tag])?'btn-warning':'btn-default'}} btn-sm" 
+           ng-repeat="(key_tag, items_tag) in ColCtrl.tags" 
+           ng-show="items_tag.length">{{key_tag}} <span class="badge">{{items_tag.length}}</span></a>
+    </div>
+    
+    <div class="container discuss-foldout-container">
+        <div class="discuss-foldout-panel">
+            <div ng-show="ColCtrl.showItem" id="discuss-fold-item" class="discuss-foldout-content col-sm-6">
+                <discuss-item ng-repeat="item in [ColCtrl.showItem]" ></discuss-item>
+            </div>
+            <div ng-show="ColCtrl.showMessages" id="discuss-messageboard" 
+                 class="discuss-foldout-content discuss-messageboard  col-sm-6">
+                
+                <discuss-messageboard></discuss-messageboard>
+                
+            </div>
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+<div id="discuss-fixed-filler"></div>
+
+<!--show items-->
+<div class="discuss-collab-content" ng-show="!ColCtrl.showItem && !ColCtrl.showTrash">
+    <div ng-show="EpiCtrl.section.settings.items.annotate_for_stage"
+         class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>{{EpiCtrl.section.settings.items.annotate_question}}</span>
+            </div>
+            <div class="panel-body">
+                <div class="row" ng-repeat="(index, item_icon) in ColCtrl.filterAnnotateList(ColCtrl.annotate_items, false)">
+                    <discuss-item-annotation ng-repeat="item_annotation in item_annotate_list = ColCtrl.findAnnotations(item_icon._id)" ng-show="item_annotation"></discuss-item-annotation>
+                    <div ng-show="!item_annotate_list.length">
+                        <div class="col-sm-6">
+                            <discuss-item-icon></discuss-item-icon>
+                        </div>
+                        <div class="col-sm-6" ng-click="ColCtrl.addAnnotateItem(item_icon._id, 'annotation: '+item_icon.title)">
+                            <span class="fa fa-plus-circle"></span> add
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="{{EpiCtrl.section.settings.items.annotate_for_stage?'col-sm-6':''}}">
+        
+        <discuss-item ng-repeat="item in ColCtrl.filterItemList()" ></discuss-item>
+        
+    </div>
+</div>
+
+<!--show trash-->
+<div class="discuss-collab-content" ng-show="!ColCtrl.showItem && ColCtrl.showTrash">
+    <discuss-item ng-repeat="item in ColCtrl.filterItemList(null, true)" ></discuss-item>
+</div>
+
+<discuss-dashboard class="discuss-collab-dashboard" ng-show="!ColCtrl.section && !EpiCtrl.export"></discuss-dashboard>
+<discuss-export class="discuss-collab-dashboard" ng-show="!ColCtrl.section && EpiCtrl.export"></discuss-export>

@@ -1,0 +1,264 @@
+html{
+    height: 100%;
+}
+
+body{
+    padding-top: 60px;
+    height: 100%;
+}
+
+ins{
+    background-color: #80CE89;
+}
+
+del{
+    background-color: #EA7D76;
+}
+
+.fill{
+    min-height: 100%;
+    height: 100%;
+}
+
+[dropdown-toggle],
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}
+
+/* Fix for: https://angular-ui.github.io/bootstrap/#/getting_started */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+tags-input .tags{
+    border: none!important;
+}
+
+tags-input .autocomplete .suggestion-item.selected, 
+tags-input .autocomplete .suggestion-item.selected em {
+    background-color: #428bca!important;
+    border: 1px solid #357ebd;
+    color: #fff!important;
+}
+
+.discuss-item-group{
+    
+}
+
+.discuss-item .panel .panel-heading.item-heading,
+.modal-content .panel .panel-heading.item-heading {
+    padding: 2px 50px 2px 5px;
+}
+.discuss-item .panel .panel-body,
+.modal-content .panel .panel-body {
+    padding: 5px;
+}
+
+.modal-content .panel{
+    margin-bottom: 0px;
+}
+
+.discuss-messagelist{
+    height: 350px;
+    overflow: auto;
+}
+
+.discuss-messageboard{
+    min-height: 100%;
+    height: 100%;
+}
+
+.discuss-messageboard ul{
+    
+}
+
+.discuss-message{
+    list-style-type: none;
+    padding-left: 15px;
+}
+
+.discuss-message-readonly{
+    background-color: #EEEEEE;
+    color: #888888;
+}
+
+.discuss-message-readonly .bg-warning{
+    color:#FFFFFF;
+}
+
+.discuss-message-promoted{
+    border-left: 4px solid #ff7518;
+}
+
+.discuss-message-inner-readonly,
+.discuss-message-inner{
+    padding-left: 5px;
+ }
+
+.message-unselected .discuss-message-inner:hover{
+    background-color: #EEEEEE;
+    border: 1px solid #CCCCCC;
+}
+.message-selected{
+    background-color: #DDDDDD;
+    border: 1px solid #BBBBBB;
+}
+
+.discuss-message .in-reply{
+    border: 1px solid #dddddd;
+    background-color: #eeeeee;
+}
+
+.discuss-messagelabel{
+    font-weight: bold;
+    width: 100%;
+    display: block;
+}
+.discuss-item-position {
+    width: 300px;
+    position: relative;
+}
+.discuss-item{
+    float: none;
+    min-height: 200px;
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+    *display: inline;
+    _height: 200px;
+}
+
+.discuss-item-position.discuss-item-closed{
+    width: 200px;
+}
+
+.discuss-item.discuss-item-large {
+    /*width: 600px;*/
+}
+
+.discuss-item-fixed {
+	
+}
+
+.discuss-item-title {
+    background: transparent;
+    color: #FFFFFF;
+    border: none;
+    border-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0, 0, 0, 0.4);
+    outline: 0 none;
+}
+
+.discuss-item-title:focus {
+    border-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0, 0, 0, 0.9);
+    outline: 0 none;
+}
+
+.discuss-item-title[disabled] {
+    background: transparent;
+    color: #EEEEEE;
+}
+
+.discuss-item-title::-webkit-input-placeholder{
+    color: #333333;
+}
+.discuss-item-title:-moz-placeholder{  /* Firefox 18- */
+    color: #333333;
+}
+.discuss-item-title::-moz-placeholder{  /* Firefox 19+ */
+    color: #333333;
+}
+.discuss-item-title:-ms-input-placeholder {  
+   color: #333333;  
+}
+
+
+.discuss-item-body {
+
+}
+
+.discuss-bar{
+    padding-left: 0px;
+    padding-right: 0px;
+/*    min-height: 80%;
+    height: 80%;*/   
+}
+
+.discuss-bar .navbar-blank{
+    background-color: #ffffff;
+}
+
+.discuss-bar .btn:focus,
+.discuss-bar .btn:active {
+   outline: none !important;
+}
+
+.discuss-bar .btn-phase{
+    font-weight: bold;
+}
+
+.label-as-badge {
+    /* from: http://stackoverflow.com/questions/18730116/twitter-bootstrap-3-0-how-do-i-badge-badge-important-now*/
+    border-radius: 1em;
+    font-size: 100%;
+}
+
+.discuss-fixed-bar{    
+    position: fixed;
+    top: 50px;
+    z-index: 20;
+    margin-left: 15px;
+    margin-right: 15px
+/*    min-height: 80%;
+    height: 80%;*/
+}
+
+.discuss-topdrag-container{
+    margin-bottom: 0px;
+    padding: 4px;
+    border: 1px solid #dddddd;
+    background-color: #f5f5f5;
+}
+
+.discuss-foldout-container{
+    position: absolute;
+}
+
+.discuss-foldout-content{
+    margin-top: 10px;
+    z-index: 10;
+    position: relative;
+    float: right;
+    /*right: 0px; */
+}
+
+.discuss-foldout-panel{
+    float: right; 
+    z-index: 10;
+    width: 100%
+}
+
+.discuss-collab-dashboard{
+    display: block;
+    margin-top: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.discuss-collab-content{
+    margin-top: 10px;
+}
+
+.discuss-section-dropdown{
+    padding-left: 0px;
+}
+
+discuss-item-icon, 
+discuss-item-icon .btn{
+    max-width: 100%;
+}
+discuss-item-icon .btn{
+    margin: 1px;
+}

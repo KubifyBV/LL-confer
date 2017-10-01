@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: app/modules/home/home.html
+msgid "My Stacks"
+msgstr ""
+
+#: app/modules/home/home.html
+msgid "My Tiles"
+msgstr ""
+
+#: app/modules/view1/view1.html
+msgid ""
+"Showing of 'interpolate' filter:\r\n"
+"    {{ 'Current version is v%VERSION%.' | interpolate }}"
+msgstr ""
+
+#: app/modules/home/home.html
+msgid "Tile Store"
+msgstr ""

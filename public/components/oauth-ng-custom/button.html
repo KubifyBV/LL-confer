@@ -1,0 +1,9 @@
+<span class="btn btn-default" ng-show="show=='logged-out'" ng-click="login()"><img style="margin-right:5px" src="https://raw.githubusercontent.com/learning-layers/LayersToolTemplate/master/extras/logo.png" height="32px">
+    Sign in with <i>Learning Layers</i>
+</span>
+<span class="btn btn-default" ng-show="show=='logged-in'" ng-click="logout()"><img style="margin-right:5px" src="https://raw.githubusercontent.com/learning-layers/LayersToolTemplate/master/extras/logo.png" height="32px">
+    Sign out <i>{{profile.name}}</i>
+</span>
+<span class="btn btn-default" ng-show="show=='denied'" ng-click="login()"><img style="margin-right:5px" src="https://raw.githubusercontent.com/learning-layers/LayersToolTemplate/master/extras/logo.png" height="32px">
+    Denied by <i>Learning Layers</i>
+</span>

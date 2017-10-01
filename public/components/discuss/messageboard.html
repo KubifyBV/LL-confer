@@ -1,0 +1,90 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        
+        <div class="btn-group pull-right">
+            &nbsp;
+            <span ng-show="MsgCtrl.newMessage.open" class="fa fa-times" ng-click="MsgCtrl.newMessage = {};"></span>
+            <span ng-show="!MsgCtrl.newMessage.open"  class="fa fa-plus" ng-click="MsgCtrl.openNewMessage(ColCtrl.showItem_slug);"></span>
+        </div>
+        
+        <div ng-show="MsgCtrl.selectedMessage && EpiCtrl.section.settings.discussion.promote_to_stage && EpiCtrl.section.settings.discussion.promote_to_stage.length > 0" 
+             class="btn-group pull-right"
+             dropdown
+             is-open="isopen">
+            <span class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                 <i class="fa fa-share-square-o"></i>
+            </span>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li ng-repeat="section in MsgCtrl.promoteSectionList()">
+                    <a class="fa fa-sign-out" ng-click="MsgCtrl.promoteMessage(section);"> {{section.title}}</a>
+                </li>
+            </ul>
+        </div>
+        <h3 class="panel-title">Discussion - {{ColCtrl.showItem?ColCtrl.showItem.title:'General'}}</h3>
+    </div>
+    <div class="panel-body fill">
+        
+        <div id="discuss-messagelist" class="discuss-messagelist" ng-show="!MsgCtrl.newMessage.open" scroll-glue="MsgCtrl.glued" discuss-fill>
+            <ul class="list-unstyled">
+                <li ng-repeat="message in MsgCtrl.episode_messages[ColCtrl.get_message_slug(EpiCtrl.section._id)] | filter:{level: 0}" 
+                    class="discuss-message" 
+                    ng-include="'render-message.html'"></li>
+            </ul>
+        </div>
+
+        <div ng-show="MsgCtrl.newMessage.open">
+            <div class="in-reply" ng-show="MsgCtrl.newMessage.message">
+                <button type="button" class="pull-right btn btn-primary btn-xs" ng-click="MsgCtrl.newMessage = {};">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h4>Write a response to:</h4>
+                <span class="discuss-messagelabel"><i class="fa fa-{{MsgCtrl.messagetypes[MsgCtrl.newMessage.message.message_type].icon}}"></i> {{MsgCtrl.newMessage.message.username}} - {{MsgCtrl.newMessage.message.posted|date:'MMM d, H:mm:ss':'CET'}}</span>
+                <span class="discuss-messagebody">{{MsgCtrl.newMessage.message.message}}</span>
+            </div>
+            <div class="in-reply" ng-show="!MsgCtrl.newMessage.message">
+                <button type="button" class="pull-right btn btn-primary btn-xs" ng-click="MsgCtrl.newMessage = {};">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h4>Write a new message</h4>
+            </div>
+            <div class="input-group" >
+                <textarea msd-elastic="\n" ng-model="MsgCtrl.newMessage.msg"  class="form-control"></textarea>
+
+                <div class="input-group-btn btn-group-vertical dropup" dropdown is-open="status.isopen">
+                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                         <i class="fa fa-reply"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li ng-repeat="messagetype in MsgCtrl.messagetypes | orderBy: messagetype.order">
+                            <a class="fa fa-{{messagetype.icon}}" ng-click="MsgCtrl.sendMessage(messagetype.label, false, ColCtrl.showItem_slug);"> {{messagetype.label}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="render-message.html">
+    <div class="{{message.readonly?'bg-primarys discuss-message-readonly':''}} {{MsgCtrl.selectedMessage.slug === message.slug?'message-selected':'message-unselected'}} {{message.promotion?'discuss-message-promoted':''}}">
+        <div class="bg-warning" ng-show="message.promotion" tooltip="This entry has been promoted to {{EpiCtrl.getSectionbyStage(message.promotion.stage).title}} by {{message.promotion.username}} on {{message.promotion.promoted|date:'MMM d, H:mm:ss':'CET'}}">
+            <small>Promoted to <strong>{{EpiCtrl.getSectionbyStage(message.promotion.stage).title}}</strong></small>
+        </div>
+        <div class="{{message.readonly?'discuss-message-inner-readonly':'discuss-message-inner'}} {{(!message.readonly && !message.touch && (!MsgCtrl.current_last_message_id || MsgCtrl.current_last_message_id < message._id))?'text-success':''}}"
+                    ng-click="MsgCtrl.clickMessage(message)">
+            <i ng-init="MsgCtrl.setMessageHistory(message, $parent)" 
+                ng-hide="message.readonly"
+                class="fa fa-reply pull-right comment-reply-btn" 
+                ng-click="MsgCtrl.openNewMessage(ColCtrl.showItem_slug, message)"></i>
+            <span class="pull-right">{{message.posted|date:'MMM d, H:mm:ss':'CET'}}</span>
+            <span class="discuss-messagelabel"><i class="fa fa-{{MsgCtrl.messagetypes[message.message_type].icon}}"></i> {{message.username}}</span>
+            
+            <span class="discuss-messagebody">{{message.message}}</span>
+            
+        </div>
+        <ul class="list-unstyled">
+            <li style="margin-left: 15px;" ng-repeat="message in MsgCtrl.episode_messages[ColCtrl.get_message_slug(message.section_id)] | filter:{level: message.level+1, parent_slug: message.slug}" class="discuss-message" ng-include="'render-message.html'"></li>
+        </ul>
+    </div>
+</script>

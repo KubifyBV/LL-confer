@@ -1,0 +1,204 @@
+{
+    "name"   : "Progressive Inquiry",
+    "code"   : "PI",
+    "mailin" : "dropzone",
+    "participants" : {
+        
+    },
+    "phases" : {
+        "intro" : {
+            "phase" : "intro",
+            "class" : "warning",
+            "mark"  : "1",
+            "title" : "What do we need?"
+        },
+        "research" : {
+            "phase" : "research",
+            "class" : "success",
+            "mark"  : "2",
+            "title" : "What do we know?"
+        },
+        "conclusion" : {
+            "phase" : "conclusion",
+            "class" : "info",
+            "mark"  : "3",
+            "title" : "What should we do?"
+        }
+    },
+    "exports" : [
+        {
+            "title" : "General export",
+            "stages" : [
+                "context",
+                "question",
+                "structuring"
+            ]
+        }
+    ],
+    "sections" : [
+        {   
+            "title" : "Dropzone",
+            "description" : "",
+            "stage" : "dropzone",
+            "phase" : "",
+            "order" : 0,
+            "settings" : {
+                "discussion" : false,
+                "items" : {
+                    "add" : true,
+                    "sort" : true,
+                    "tagging": true,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "annotate_for_stage" : "",
+                    "promote_to_stage" : ["brainstorm", "deepening"],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Context",
+            "description" : "What is the context of the problem or issue?",
+            "stage" : "context",
+            "phase" : "intro",
+            "order" : 1,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm", "deepening"]
+                },
+                "items" : {
+                    "add" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "annotate_for_stage" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : [
+                        {
+                            "name" : "Context",
+                            "body" : "",
+                            "slug" : "fi_context"
+                        }
+                    ]
+                }
+            }
+        },
+        {   
+            "title" : "Question",
+            "description" : "Formulate the question you are trying to answer",
+            "stage" : "question",
+            "phase" : "intro",
+            "order" : 2,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm", "deepening"]
+                },
+                "items" : {
+                    "add" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "annotate_for_stage" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : [
+                        {
+                            "name" : "Question",
+                            "body" : "",
+                            "slug" : "fi_question"
+                        }
+                    ]
+                }
+            }
+        },
+        {   
+            "title" : "Brainstorm",
+            "description" : "Add information from personal experience and tag",
+            "stage" : "brainstorm",
+            "phase" : "research",
+            "order" : 3,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm", "deepening"]
+                },
+                "items" : {
+                    "add" : true,
+                    "sort" : true,
+                    "tagging" : true,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "annotate_for_stage" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Evaluation",
+            "description" : "Write up general patterns",
+            "stage" : "evaluation",
+            "phase" : "research",
+            "order" : 4,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm", "deepening"]
+                },
+                "items" : {
+                    "add" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "brainstorm",
+                    "annotate_for_stage" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Deepening",
+            "description" : "Write up possible solutions or options, identify gaps",
+            "stage" : "deepening",
+            "phase" : "research",
+            "order" : 5,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm", "deepening"]
+                },
+                "items" : {
+                    "add" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "annotate_for_stage" : "evaluation",
+                    "promote_to_stage" : [],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Structuring",
+            "description" : "Write up scenarios based on identified policies",
+            "stage" : "structuring",
+            "phase" : "conclusion",
+            "order" : 6,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm", "deepening"]
+                },
+                "items" : {
+                    "add" : false,
+                    "sort" : false,
+                    "tagging" : true,
+                    "group_multiple" : true,
+                    "group_for_stage" : "evaluation",
+                    "annotate_for_stage" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : []
+                }
+            }
+        }
+    ]
+}

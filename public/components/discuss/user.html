@@ -1,0 +1,10 @@
+<!-- Temporarily switched off -->
+
+<div ng-show="false && !UsrCtrl.username">
+    <input ng-model="UsrCtrl.loginname" placeholder="your username" class="xform-control" />
+    <input ng-model="UsrCtrl.password" type="password" placeholder="your password" class="xform-control" />
+    <button type="button" class="btn btn-primary" ng-click="UsrCtrl.login_user()"><i class="fa fa-reply"></i></button>
+</div>
+<div ng-show="false && UsrCtrl.username">
+    Welcome, {{UsrCtrl.username}} <a ng-click="UsrCtrl.logout_user(EpiCtrl.clear);"><span class="fa fa-times-circle-o"></span></a>
+</div>

@@ -1,0 +1,13 @@
+<div class='content'>
+    <circle-menu options="{
+                    width: 400, 
+                    height: 400, 
+                    radius: 150, 
+                    label: 'Menu',
+                    size: TestsCtrl.list.length                 
+                 }">
+        <circle-menu-item ng-repeat="item in TestsCtrl.list" 
+                          click="TestsCtrl.callback(item)"
+                          content="item.title"></circle-menu-item>
+    </circle-menu>
+</div>

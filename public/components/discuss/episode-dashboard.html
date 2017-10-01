@@ -1,0 +1,43 @@
+<div class="row">
+    
+    <div  class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Workgroup members</h3>
+            </div>
+            <div class="panel-body fill">
+                <ul class="fa-ul">
+                    <li ng-repeat="(key, user) in EpiCtrl.episode.members" class="{{EpiCtrl.online[user.slug]?'text-success':''}}">
+                        <span ng-show="key === EpiCtrl.user_slug" class="fa-li fa fa-caret-right "></span>
+                        <span ng-show="key != EpiCtrl.user_slug" class="fa-li fa fa-user"></span> {{user.username}}</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Workgroup information</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <td>{{EpiCtrl.episode.title}}</td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td>{{EpiCtrl.episode.mail_slug}}@confer.zone</td>
+                    </tr>
+                    <tr>
+                        <th>Export</th>
+                        <td>
+                            <btn class="btn btn-primary" ng-click="EpiCtrl.toggleExport()">Open export manager</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

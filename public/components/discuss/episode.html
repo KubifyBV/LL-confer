@@ -1,0 +1,51 @@
+
+<div id="discuss_navigation" class="row">
+    
+    <discuss-user></discuss-user>
+    <div ng-show="EpiCtrl.username && !EpiCtrl.episode_id">
+        
+    <h3>My Workgroups</h3>
+
+    <div class="row">
+
+        <div class="col-md-4"
+            ng-repeat="episode in EpiCtrl.episodes" 
+
+            >
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="fa fa-sign-in pull-right" ng-click="EpiCtrl.login_user_episode(episode)"></span>{{episode.title}}</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                    <tr>
+                        <th>Started</th>
+                        <td>{{episode.created|date:'MMM d, H:mm:ss':'CET'}}</td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td><a href="mailto:{{episode.mail_slug}}@confer.zone">{{episode.mail_slug}}@confer.zone</a></td>
+                    </tr>
+                    <tr>
+                        <th>members</th>
+                        <td>{{EpiCtrl.count(episode.members)}}</td>
+                    </tr>
+                    <tr ng-show="false">
+                        <td colspan="2">
+                            <ul class="fa-ul">
+                                <li ng-repeat="(key, user) in episode.members">
+                                    <span ng-show="key === EpiCtrl.user_slug" class="fa-li fa fa-caret-right "></span>
+                                    <span ng-show="key != EpiCtrl.user_slug" class="fa-li fa fa-user"></span> {{user.username}}</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div id="discuss_section" class="row fill" ng-show="EpiCtrl.episode_id">
+    <discuss-section ></discuss-section>
+</div>

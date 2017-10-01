@@ -1,0 +1,275 @@
+{
+    "name"   : "Simplified Progressive Inquiry",
+    "code"   : "SPI",
+    "mailin" : "dropzone",
+    "phases" : {
+        "intro" : {
+            "phase" : "intro",
+            "class" : "warning",
+            "mark"  : "1",
+            "title" : "What do we need?"
+        },
+        "research" : {
+            "phase" : "research",
+            "class" : "success",
+            "mark"  : "2",
+            "title" : "What do we know?"
+        },
+        "conclusion" : {
+            "phase" : "conclusion",
+            "class" : "info",
+            "mark"  : "3",
+            "title" : "What should we do?"
+        }
+    },
+    "participants" : {
+        
+    },
+    "report_publish": [],
+    "report" : [
+        {
+            "title": "What do we need?",
+            "stage": "context",
+            "options": {},
+            "value": true
+        },
+        {
+            "title": "What do we know?",
+            "stage": "evaluation",
+            "options": {
+                "include_background": {
+                    "key" : "include_background",
+                    "title" : "include background items",
+                    "stage" : "brainstorm",
+                    "value" : true
+                }
+            },
+            "value": true
+        },
+        {
+            "title": "What should we do?",
+            "stage": "structuring",
+            "options": {
+                "include_comments": {
+                    "key" : "include_comments",
+                    "title" : "include comments on identified issues",
+                    "stage" : "evaluation",
+                    "value" : true
+                },
+                "include_annotations": {
+                    "key" : "include_annotations",
+                    "title" : "include individual recommendations",
+                    "stage" : "conclusion", 
+                    "value" : true                        
+                }
+            },
+            "value": true
+        },
+        {
+            "title": "Recommendations",
+            "stage": "conclusion",
+            "options": {},
+            "value": true
+        }
+
+    ],
+    "sections" : [
+        {   
+            "title" : "Dropzone",
+            "description" : "",
+            "stage" : "dropzone",
+            "phase" : "",
+            "order" : 0,
+            "settings" : {
+                "discussion" : false,
+                "items" : {
+                    "label": "Item",
+                    "type" : "raw",
+                    "add" : true,
+                    "duplicate" : false,
+                    "sort" : true,
+                    "tagging": true,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "group_question" : "",
+                    "annotate_for_stage" : "",
+                    "annotate_question" : "",
+                    "annotate_title" : "",
+                    "comment_for_stage" : "",
+                    "comment_question" : "",
+                    "comment_title" : "",
+                    "promote_to_stage" : ["brainstorm"],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Context and Question",
+            "description" : "What is the context of the problem or issue?",
+            "stage" : "context",
+            "phase" : "intro",
+            "order" : 1,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm"]
+                },
+                "items" : {
+                    "type" : "fixed",
+                    "add" : false,
+                    "duplicate" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "group_question" : "",
+                    "annotate_for_stage" : "",
+                    "annotate_question" : "",
+                    "annotate_title" : "",
+                    "comment_for_stage" : "",
+                    "comment_question" : "",
+                    "comment_title" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : [
+                        {
+                            "name" : "Context",
+                            "body" : "",
+                            "slug" : "fi_context"
+                        },
+                        {
+                            "name" : "Question",
+                            "body" : "",
+                            "slug" : "fi_question"
+                        }
+                    ]
+                }
+            }
+        },
+        {   
+            "title" : "Brainstorm",
+            "description" : "Add information from personal experience and tag",
+            "stage" : "brainstorm",
+            "phase" : "research",
+            "order" : 2,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm"]
+                },
+                "items" : {
+                    "label": "Item",
+                    "type" : "single",
+                    "add" : true,
+                    "duplicate" : true,
+                    "sort" : true,
+                    "tagging" : true,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "group_question" : "",
+                    "annotate_for_stage" : "",
+                    "annotate_question" : "",
+                    "annotate_title" : "",
+                    "comment_for_stage" : "",
+                    "comment_question" : "",
+                    "comment_title" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Identify Issues",
+            "description" : "Write up general patterns",
+            "stage" : "evaluation",
+            "phase" : "research",
+            "order" : 3,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm"]
+                },
+                "items" : {
+                    "label": "Issue",
+                    "type" : "group",
+                    "add" : false,
+                    "duplicate" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "brainstorm",
+                    "group_question" : "",
+                    "annotate_for_stage" : "",
+                    "annotate_question" : "",
+                    "annotate_title" : "",
+                    "comment_for_stage" : "",
+                    "comment_question" : "",
+                    "comment_title" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Options",
+            "description" : "Write up options and conclusions based on identified issues",
+            "stage" : "structuring",
+            "phase" : "conclusion",
+            "order" : 4,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm"]
+                },
+                "items" : {
+                    "label": "Option",
+                    "type" : "idea",
+                    "add" : true,
+                    "duplicate" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "group_question" : "",
+                    "annotate_for_stage" : "",
+                    "annotate_question" : "",
+                    "comment_for_stage" : "evaluation",
+                    "comment_question" : "How does this address the identified issues?",
+                    "comment_title" : "How this issue is addressed",
+                    "promote_to_stage" : [],
+                    "fixed" : []
+                }
+            }
+        },
+        {   
+            "title" : "Recommendations",
+            "description" : "Write up recommendations",
+            "stage" : "conclusion",
+            "phase" : "conclusion",
+            "order" : 5,
+            "settings" : {
+                "discussion" : {
+                    "promote_to_stage" : ["brainstorm"]
+                },
+                "items" : {
+                    "label": "Conclusion",
+                    "type" : "fixed",
+                    "add" : false,
+                    "duplicate" : false,
+                    "sort" : false,
+                    "tagging" : false,
+                    "group_multiple" : false,
+                    "group_for_stage" : "",
+                    "group_question" : "",
+                    "annotate_for_stage" : "structuring",
+                    "annotate_question" : "When do you recommend each option?",
+                    "annotate_title" : "When this option is recommended",
+                    "comment_for_stage" : "",
+                    "comment_question" : "",
+                    "comment_title" : "",
+                    "promote_to_stage" : [],
+                    "fixed" : [{
+                            "name" : "Recommendations",
+                            "body" : "",
+                            "slug" : "fi_recommendations"
+                        }]
+                }
+            }
+        }
+    ]
+}

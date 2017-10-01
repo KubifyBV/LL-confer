@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="DiscussApp" ng-controller="MainController as MainCtrl" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="DiscussApp" ng-controller="MainController as MainCtrl" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="DiscussApp" ng-controller="MainController as MainCtrl" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="DiscussApp" ng-controller="MainController as MainCtrl" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Confer.Zone</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="assets/css/bootstrap_cosmo.min.css?v=__VERSION__">
+    <link rel="stylesheet" href="assets/css/app.css?v=__VERSION__">  
+    <link rel="stylesheet" href="assets/css/tiles_responsive.css?v=__VERSION__">
+    <link rel="stylesheet" href="assets/css/menu.css?v=__VERSION__">
+    <link rel="stylesheet" href="components/discuss/css/style.css?v=__VERSION__">
+    <link rel="stylesheet" href="components/discuss/css/icons.css?v=__VERSION__">
+    <link rel="stylesheet" href="components/circle-menu/circle-menu.css?v=__VERSION__">
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.min.css?v=__VERSION__">
+    <link rel='stylesheet' href='bower_components/textAngular/src/textAngular.css?v=__VERSION__'>
+    <link rel="stylesheet" href="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css?v=__VERSION__" />
+    <link rel="stylesheet" href="bower_components/angular-tour/dist/angular-tour.css?v=__VERSION__"/>
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css?v=__VERSION__"/>
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css?v=__VERSION__"/>
+    
+    
+    <script src="/socket.io/socket.io.js?v=__VERSION__"></script>
+    <script src="bower_components/modernizr/modernizr.js?v=__VERSION__"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js?v=__VERSION__"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.min.js?v=__VERSION__"></script>
+    <script src="bower_components/angular/angular.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-route/angular-route.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-socket-io/socket.js?v=__VERSION__"></script>
+    
+    <script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js?v=__VERSION__"></script>
+    <script src="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js?v=__VERSION__"></script>
+    
+    <script src="js/app.js?v=__VERSION__"></script>
+    <script type="text/javascript">
+        var VERSION = "__VERSION_0_"; //this will be automatically replaced by the latest update timestamp
+    </script>
+</head>
+<body>
+
+    <!-- bootstrap navbar -->
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="#/" class="navbar-brand">Confer Zone</a>
+          
+          <button ng-init="navCollapsedMain = true"
+                ng-click="navCollapsedMain = !navCollapsedMain"
+                class="navbar-toggle" 
+                type="button" 
+                data-toggle="collapse" 
+                data-target="#navbarr-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          
+        </div>
+        <div collapse="navCollapsedMain" class="navbar-collapse collapse pull-right" id="navbarr-main">
+            <ul class="nav navbar-nav">
+                <li><a ng-click="MainCtrl.closeworkgroup()">My Workgroups</a></li>
+                <li><a href="#/discuss-manager">Workgroup Manager</a></li>
+                <li><a href="#/help">Help</a></li>
+                <li ng-show="true"><oauth
+                    fullsite="{{MainCtrl.full_url_root}}/api/login"
+                    profile-uri="{{MainCtrl.full_url_root}}/api/profile"
+                    refresh-uri="{{MainCtrl.full_url_root}}/api/refresh"
+                    template="components/oauth-ng-custom/button.html"
+                    state="Tralalal"
+                    ></oauth>
+                </li>
+            </ul>
+            <iframe ng-src="{{MainCtrl.logoutURL}}" ng-show="false" style="display:none;"></iframe>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- ng routes hook -->
+    <alerts></alerts>
+    <div ng-view class="container"></div>
+    <div style="height: 60px;"></div>
+    <!-- footer -->
+    <div class="navbar navbar-default navbar-fixed-bottom" style="margin-bottom: 0px" role="navigation">
+        <div class="navbar-footer">
+
+            <!--
+            <a class="navbar-brand" href="#">&copy; {{constants.company_name}} {{constants.copyright_year}}</a>
+            -->
+            <button ng-init="navCollapsedFooter = true"
+                ng-click="navCollapsedFooter = !navCollapsedFooter"
+                type="button" class="navbar-toggle" data-toggle="collapse" data-target="#footer-nav">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+
+
+        <div collapse="navCollapsedFooter" id="footer-nav" class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav">
+                <li><a href="#/about">About us</a></li>
+            </ul>
+            
+        </div>
+    </div>
+        
+    <!-- In production use:
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js?v=__VERSION__"></script>
+    -->
+    
+    <script src="bower_components/ngstorage/ngStorage.js?v=__VERSION__"></script>
+    
+    <script src="bower_components/cryptojslib/rollups/aes.js?v=__VERSION__"></script>
+    <script src="bower_components/oauth-ng/dist/oauth-ng.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-gettext/dist/angular-gettext.min.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-ui-sortable/sortable.min.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-dragdrop/src/angular-dragdrop.min.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-elastic/elastic.js?v=__VERSION__"></script>
+    <script src="bower_components/angular-truncate/src/truncate.js?v=__VERSION__"></script>
+    <!--<script src="bower_components/angular-touch/angular-touch.js"></script>-->
+    <script src="bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js?v=__VERSION__"></script>
+    <script src='bower_components/textAngular/dist/textAngular-rangy.min.js?v=__VERSION__'></script>
+    <script src='bower_components/textAngular/dist/textAngular-sanitize.min.js?v=__VERSION__'></script>
+    <script src='bower_components/textAngular/dist/textAngular.min.js?v=__VERSION__'></script>
+    <script src='bower_components/angular-diff/angular-diff.min.js?v=__VERSION__'></script>
+    <script src='bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js?v=__VERSION__'></script>
+    <script src='bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js?v=__VERSION__'></script>
+    <script src="bower_components/angular-tour/dist/angular-tour-tpls.min.js?v=__VERSION__"></script>
+    <script src="bower_components/angularjs-scroll-glue/src/scrollglue.js?v=__VERSION__"></script>
+    <script src="bower_components/ng-tags-input/ng-tags-input.min.js?v=__VERSION__"></script>
+    
+    <script src="modules/tests/tests.js?v=__VERSION__"></script>
+    <script src="modules/discuss/discuss.js?v=__VERSION__"></script>
+    <script src="modules/discuss-manager/discuss-manager.js?v=__VERSION__"></script>
+    <script src="modules/discuss-report/discuss-report.js?v=__VERSION__"></script>
+    <script src="components/circle-menu/circle-menu.js?v=__VERSION__"></script>
+    <script src="components/discuss/discuss.js?v=__VERSION__"></script>
+    <script src="components/discuss/discuss-user.js?v=__VERSION__"></script>
+    <script src="components/discuss/discuss-manager.js?v=__VERSION__"></script>
+    <script src="components/discuss/discuss-export.js?v=__VERSION__"></script>
+    <script src="components/discuss/discuss-tools.js?v=__VERSION__"></script>
+    <script src="components/discuss/discuss-api.js?v=__VERSION__"></script>
+</body>
+</html>

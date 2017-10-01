@@ -1,0 +1,42 @@
+{
+  "name": "Discuss",
+  "description": "Informed Asynchronous Collaboration",
+  "version": "0.0.0",
+  "homepage": "",
+  "license": "",
+  "private": true,
+  "dependencies": {
+    "angular": "1.3.x",
+    "angular-route": "1.3.x",
+    "angular-loader": "1.3.x",
+    "angular-mocks": "1.3.x",
+    "angular-resource": "1.3.x",
+    "angular-touch": "1.3.x",
+    "angular-ui-bootstrap-bower": "*",
+    "angular-socket-io": "~0.7.x",
+    "jquery": "~1.11.x",
+    "jquery-ui": "latest",
+    "bootstrap": "~3.2.0",
+    "modernizr": "~2.8.x",
+    "fontawesome": "*",
+    "angular-ui-bootstrap": "*",
+    "oauth-ng": "https://github.com/raymondelferink/oauth-ng.git#master",
+    "angular-gettext": "*",
+    "angular-ui-sortable": "*",
+    "textAngular": "*",
+    "malihu-custom-scrollbar-plugin": "*",
+    "angular-diff": "*",
+    "angular-elastic": "*",
+    "angular-truncate": "*",
+    "angular-dragdrop": "*",
+    "ngstorage": "*",
+    "angular-tour": "https://github.com/raymondelferink/angular-tour.git#master",
+    "jquery-ui-touch-punch": "https://github.com/furf/jquery-ui-touch-punch.git",
+    "angularjs-scroll-glue": "*",
+    "ng-tags-input": "*"
+  },
+  "resolutions": {
+    "angular": "1.3.x",
+    "angular-mocks": "1.3.x"
+  }
+}

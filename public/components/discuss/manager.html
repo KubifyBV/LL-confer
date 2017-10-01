@@ -1,0 +1,235 @@
+<alert ng-repeat="alert in ManCtrl.alerts" type="{{alert.type}}" close="ManCtrl.close_alert($index)">{{alert.msg}}</alert>
+<div>
+    <discuss-user></discuss-user>
+</div>
+
+<div class="col-md-4" ng-show="ManCtrl.episodes">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Manage workgroups 
+                <span class="pull-right fa fa-plus" 
+                      tooltip="Create new workgroup"
+                      tooltip-placement="right"
+                      ng-click="ManCtrl.edit_episode()"></span></h3>
+        </div>
+        <div class="panel-body">
+            <div class="list-group">
+                <a ng-repeat="episode in ManCtrl.episodes" 
+                   class="list-group-item {{ManCtrl.episode === episode?'active':''}}" 
+                   ng-click="ManCtrl.edit_episode(episode)">{{episode.title}}</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!--Edit existing workgroup-->
+<div class="well col-md-8 form-horizontal" ng-show="!ManCtrl.new_episode && ManCtrl.episode_slug && ManCtrl.episode">
+    <fieldset>
+        <legend>Workgroup: {{ManCtrl.episode.title}} <i class="pull-right fa fa-times" ng-click="ManCtrl.close_edit_episode()"></i></legend>
+        <div class="form-group {{ManCtrl.episode.title?'has-success':'has-error'}}">
+            <label class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+                <input type="text" 
+                   ng-model="ManCtrl.episode.title" 
+                   placeholder="workgroup name" 
+                   class="form-control" />
+            </div>
+        </div>
+        <div class="form-group has-success">
+            <label class="col-sm-2 control-label" >E-mail</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text"
+                        ng-model="ManCtrl.episode.mail_slug" 
+                        placeholder="workgroup e-mail" 
+                        class="form-control"
+                        ng-disabled="true" />
+                    <span class="input-group-addon">@confer.zone</span>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Members</label>
+            <div class="col-sm-10">
+                <tags-input 
+                    on-tag-added="ManCtrl.checkMember($tag, false);"
+                    display-property="email"
+                    template="member-custom-template"
+                    placeholder="Add member's email"
+                    allowed-tags-pattern="^([\w-\+]+(?:\.[\w-\+]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
+                    ng-model="ManCtrl.episode_members">
+                    <auto-complete source="ManCtrl.loadMembers($query)"
+                               min-length="2"
+                               load-on-down-arrow="true"
+                               template="member-autocomplete-template"></auto-complete>
+                </tags-input>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+                <button type="button" ng-disabled="!ManCtrl.episode.title" class="btn btn-primary" ng-click="ManCtrl.save_episode()"><i class="fa fa-reply"></i> Save Workgroup</button>
+                <button type="button" ng-disabled="ManCtrl.admin_level < 10" class="btn btn-warning" ng-click="ManCtrl.delete_episode()"><i class="fa fa-exclamation-triangle"></i> Delete workgroup</button>
+                <span class="pull-right label label-warning">{{ManCtrl.episode_alert}}</span>
+            </div>
+        </div>
+    </fieldset>
+
+</div>
+
+<!-- Create new workgroup-->
+<div class="well col-md-8 form-horizontal" ng-show="ManCtrl.new_episode && !(ManCtrl.admin_level >= 1)">
+    Your level is {{ManCtrl.admin_level}}
+</div>
+<div class="well col-md-8 form-horizontal" ng-show="ManCtrl.new_episode && ManCtrl.admin_level >= 1">
+    <fieldset>
+    <legend>Create new workgroup <i class="pull-right fa fa-times" ng-click="ManCtrl.close_edit_episode()"></i></legend>
+    <div class="form-group {{ManCtrl.new_episode_title?'has-success':'has-error'}}">
+        <label class="col-sm-2 control-label">Title</label>
+        <div class="col-sm-10">
+            <input type="text" 
+               ng-model="ManCtrl.new_episode_title" 
+               placeholder="workgroup name" 
+               class="form-control" />
+        </div>
+    </div>
+    <div class="form-group has-success">
+        <label class="col-sm-2 control-label">Model</label>
+        <div class="col-sm-10">
+            <select class='form-control'
+                placeholder='pick model'
+                data-ng-options="model as title for (model, title) in ManCtrl.epi_models" 
+                data-ng-model="ManCtrl.new_episode_model"></select>
+        </div>
+    </div>
+    <div class="form-group {{ManCtrl.new_episode_mail_slug_valid?'has-success':'has-error'}}">
+        <label class="col-sm-2 control-label" >E-mail</label>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input type="text"
+                    ng-model="ManCtrl.new_episode_mail_slug" 
+                    placeholder="workgroup e-mail" 
+                    class="form-control"
+                    ng-change="ManCtrl.validate_mail_slug()" />
+                <span class="input-group-addon">@confer.zone</span>
+
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Members</label>
+        <div class="col-sm-10">
+            <tags-input 
+                on-tag-added="ManCtrl.checkMember($tag, true);"
+                display-property="email"
+                template="member-custom-template"
+                placeholder="Add member's email"
+                allowed-tags-pattern="^([\w-\+]+(?:\.[\w-\+]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
+                ng-model="ManCtrl.new_episode_members">
+                <auto-complete source="ManCtrl.loadMembers($query)"
+                               min-length="2"
+                               load-on-down-arrow="true"
+                               template="member-autocomplete-template"></auto-complete>
+            </tags-input>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <button type="button" ng-disabled="!ManCtrl.new_episode_title || !ManCtrl.new_episode_mail_slug_valid" class="btn btn-primary" ng-click="ManCtrl.add_episode()"><i class="fa fa-reply"></i> Create Workgroup</button>
+
+            <span class="pull-right label label-warning">{{ManCtrl.episode_alert}}</span>
+        </div>
+    </div>
+    </fieldset>
+
+</div>
+
+<div class="well col-md-12 form-horizontal" ng-show="ManCtrl.admin_level >= 10">
+    <fieldset>
+    <legend>Database Management</legend>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Clear DB</label>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input type="text"
+                    ng-model="ManCtrl.reset_confirm" 
+                    placeholder="type: I am certain" 
+                    class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-warning" ng-click="ManCtrl.reset_all()"><i class="fa fa-exclamation-triangle"></i> Clear Database</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    </fieldset>
+<!--
+    <fieldset>
+    <legend>Add User</legend>
+    <div class="form-group {{ManCtrl.new_user_name?'has-success':'has-error'}}">
+        <label class="col-lg-2 control-label">Full name</label>
+        <div class="col-lg-10">
+            <input type="text" 
+               ng-model="ManCtrl.new_user_name" 
+               placeholder="full name" 
+               class="form-control" />
+        </div>
+    </div>
+    <div class="form-group {{ManCtrl.new_user_mail_valid?'has-success':'has-error'}}">
+        <label class="col-lg-2 control-label" >E-mail</label>
+        <div class="col-lg-10">
+            <input type="text"
+                ng-model="ManCtrl.new_user_mail" 
+                placeholder="e-mail" 
+                class="form-control"
+                ng-change="ManCtrl.validate_mail()" />
+        </div>
+    </div>
+    <div class="form-group {{ManCtrl.new_user_password1_valid?'has-success':'has-error'}}">
+        <label class="col-lg-2 control-label" >Password</label>
+        <div class="col-lg-10">
+            <input type="password"
+                ng-model="ManCtrl.new_user_password1" 
+                class="form-control"
+                ng-change="ManCtrl.validate_password(ManCtrl.new_user_password1, ManCtrl.new_user_password2)" />
+        </div>
+    </div>
+    <div class="form-group {{ManCtrl.new_user_password2_valid?'has-success':'has-error'}}">
+        <label class="col-lg-2 control-label" >Repeat password</label>
+        <div class="col-lg-10">
+            <input type="password"
+                ng-model="ManCtrl.new_user_password2" 
+                class="form-control"
+                ng-change="ManCtrl.validate_password(ManCtrl.new_user_password1, ManCtrl.new_user_password2)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+            <button type="button" ng-disabled="!ManCtrl.new_user_name || !ManCtrl.new_user_mail_valid || !ManCtrl.new_user_password1_valid || !ManCtrl.new_user_password2_valid" 
+                    class="btn btn-primary" 
+                    ng-click="ManCtrl.add_user()"><i class="fa fa-reply"></i> Add user</button>
+            <span class="pull-right label label-warning">{{ManCtrl.user_alert}}</span>
+        </div>
+    </div>
+    </fieldset>-->
+    
+</div>
+    
+
+<script type="text/ng-template" id="member-custom-template">
+    <div class="tag-template">
+      <div>
+        <span class="fa {{data.slug?'fa-check-square-o':(data.checked?'fa-square-o':'fa-spin fa-spinner')}}"
+            tooltip="{{data.slug?'Registered':(data.checked?'New user':'Checking...')}}"></span>
+        <span class="fa {{data.admin?'fa-user-plus':'fa-user'}}" 
+            ng-click="data.admin=!data.admin"
+            tooltip="{{data.admin?'Administrator':'Member'}}"></span>
+        <span tooltip="{{$getDisplayText()}}">{{data.username?data.username:$getDisplayText()}}</span>
+        <a class="remove-button" ng-click="$removeTag()" tooltip="Remove {{data.username?data.username:$getDisplayText()}}">&#10006;</a>
+      </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="member-autocomplete-template">
+    <span class="fa fa-user"></span> {{data.username}} ({{data.email}})
+</script>

@@ -1,0 +1,231 @@
+<div class="pull-right col-sm-4 well well-sm">
+    <h4 ng-click="closeoptions=!closeoptions"><span class="pull-right fa {{openoptions?'fa-caret-down':'fa-caret-right'}}"></span>Report options</h4>
+    <div ng-show="!closeoptions">
+        <ul class='list-unstyled'>
+            <li ng-repeat="report in EpiCtrl.report">
+                <input type="checkbox" ng-model="report.value" ng-click="EpiCtrl.report_publish()">&nbsp; {{report.title}}
+                <div style="border-left: 3px grey solid; marging-left: 5px; padding-left: 5px;" ng-show="report.value && EpiCtrl.count(report.options) > 0">
+                    <ul class='list-unstyled'>
+                        <li class="" ng-repeat="(key, option) in report.options">
+                            <input type="checkbox" ng-model="option.value" ng-click="EpiCtrl.report_publish()">&nbsp; {{option.title}}
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <div ng-show="true">
+            <h4>Publish this report</h4>
+            <div>
+                <input type="checkbox" ng-model="EpiCtrl.publish_report" ng-click="EpiCtrl.report_publish()">&nbsp; 
+                <span ng-show="EpiCtrl.publish_report" class="text-success"><a href="{{MainCtrl.full_url_root}}/#/report/{{EpiCtrl.episode.slug}}" target="_blank">{{MainCtrl.full_url_root}}/report/{{EpiCtrl.episode.slug}}</a></span>
+                <span ng-show="!EpiCtrl.publish_report" class="text-danger">{{MainCtrl.full_url_root}}/#/report/{{EpiCtrl.episode.slug}}</span>
+            </div>
+        </div>
+        
+        <div ng-show="true">
+            <h4>Export this report</h4>
+            <div>
+                <a ng-click="EpiCtrl.copyReport('report')">Export report</a>
+            </div>
+        </div>
+                
+    </div>
+</div>
+
+<div id="report">
+    <h1>{{ExpCtrl.episode.title}}</h1>
+    <div><span class="fa fa-envelope-o"></span> <a href="mailto:{{ExpCtrl.episode.mail_slug}}@confer.zone">{{ExpCtrl.episode.mail_slug}}@confer.zone</a></div>
+
+    <h3>Workgroup Members</h3>
+    <div>
+        <ul class="list-unstyled">
+            <li ng-repeat="(slug, member) in ExpCtrl.episode.members">
+                {{member.username}} [{{member.email}}]
+            </li>
+        </ul>
+    </div>
+    
+    <div ng-repeat="report in EpiCtrl.report | filter:{value: true}">
+        <h3>{{$index+1}}. {{report.title}}</h3>
+
+        <div ng-repeat="item in items = ColCtrl.filterItemList(report.stage)" 
+             ng-init="top=true" 
+             ng-include="'render-export-item.html'"></div>
+
+        <div class="alert alert-warning" ng-show="ExpCtrl.count(items) == 0">
+            There is no content for this stage
+        </div>
+    </div>
+
+</div>
+
+<!--styled render-->
+<script type="text/ng-template" id="render-export-item.html">
+    <div class="panel panel-{{top?'primary':'default'}}" >
+        <div class="panel-heading">{{item.title}}</div>
+        <div class="panel-body">
+            <div>{{item.body}}</div>
+            <span ng-repeat="tag in item.labels[item.stage]">
+                <span class="label label-default" >{{tag.text}}</span>
+            </span>
+            <br />
+            <div class="panel panel-default" ng-show="item.links.length > 0">
+                <div class="panel-heading">
+                    <span>Items and links</span>
+                </div>
+                <a ng-repeat="link in item.links" class="item-link" href="{{link.url}}" filetype="{{link.url|extension}}"  target="_blank">
+                    <span class="icon-corner"></span>
+                    {{link.title}}
+                </a>
+            </div>
+    
+            
+            <div class="panel panel-info" ng-show="item.stage == report.stage && report.options.include_background.value && report.options.include_background.stage">
+                <div class="panel-heading">Background</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li style="margin-left: 15px;" ng-init="top=false" ng-repeat="subitem in bg_items = ColCtrl.filterGroupList(ColCtrl.filterItemList(report.options.include_background.stage), item._id)" ng-include="'render-export-subitem.html'"></li>
+                    </ul>
+                    <div class="alert alert-warning" ng-show="bg_items.count == 0">
+                        There is no content for this stage
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel panel-info" ng-show="item.stage == report.stage && report.options.include_comments.value && report.options.include_comments.stage">
+                <div class="panel-heading">{{ExpCtrl.getSection(report.stage).settings.items.comment_question}}</div>
+                <div class="panel-body">
+                    
+                    <div class="row" ng-repeat="comment_item in comment_items = ColCtrl.filterItemList(report.options.include_comments.stage)">
+                        <div >
+                            <div class="col-sm-6">
+                            {{comment_item.title}}
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-repeat="item_comment in item_comment_list = ColCtrl.findComments(item._id, comment_item._id, report.stage)">
+                                {{item_comment.body}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="panel panel-info" ng-show="item.stage == report.stage && report.options.include_annotations.value && report.options.include_annotations.stage">
+                <div class="panel-heading">{{ExpCtrl.getSection(report.options.include_annotations.stage).settings.items.annotate_title}}</div>
+                <div class="panel-body"> 
+                    <div class="row">
+                        <div class="col-sm-12" ng-repeat="item_annotate in ColCtrl.findAnnotations(item._id, report.options.include_annotations.stage)">
+                            {{item_annotate.body}}                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="render-export-subitem.html">
+    <div class="panel panel-{{top?'primary':'default'}}" >
+        <div class="panel-heading">{{subitem.title}}</div>
+        <div class="panel-body">
+            <div>{{subitem.body}}</div>
+            <span ng-repeat="tag in subitem.labels[subitem.stage]">
+                <span class="label label-default" >{{tag.text}}</span>
+            </span>
+            <br />
+            <div class="panel panel-default" ng-show="subitem.links.length > 0">
+                <div class="panel-heading">
+                    <span>Items and links</span>
+                </div>
+                <a ng-repeat="link in subitem.links" class="item-link" href="{{link.url}}" filetype="{{link.url|extension}}"  target="_blank">
+                    <span class="icon-corner"></span>
+                    {{link.title}}
+                </a>
+            </div>           
+        </div>
+    </div>
+</script>
+
+
+<!--unstyled render-->
+<script type="text/ng-template" id="raw-render-export-item.html">
+        <h3 class="panel-heading">{{item.title}}</h3>
+        <div class="panel-body">
+            <p>{{item.body}}</p>
+            <p ng-show="item.labels[item.stage].length > 0"><small><strong>tags: </strong>{{item.labels[item.stage].join(", ")}}</small></p>
+            
+            <div ng-show="item.links.length > 0">
+                <h4>Items and links</h4>
+                <ul class="list-unstyled">
+                    <li ng-repeat="link in item.links">
+                        <a  class="item-link" href="{{link.url}}" filetype="{{link.url|extension}}"  target="_blank">
+                            <span class="icon-corner"></span>
+                            {{link.title}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    
+            
+            <div ng-show="item.stage == report.stage && report.options.include_background.value && report.options.include_background.stage">
+                <h4>Background</h4>
+                <p>
+                    <ul class="list-unstyled">
+                        <li style="margin-left: 15px;" ng-init="top=false" ng-repeat="subitem in bg_items = ColCtrl.filterGroupList(ColCtrl.filterItemList(report.options.include_background.stage), item._id)" ng-include="'raw-render-export-subitem.html'"></li>
+                    </ul>
+                    <div ng-show="bg_items.count == 0">
+                        There are no background items
+                    </div>
+                </p>
+            </div>
+            
+            <div ng-show="item.stage == report.stage && report.options.include_comments.value && report.options.include_comments.stage">
+                <h4>{{ExpCtrl.getSection(report.stage).settings.items.comment_question}}</h4>
+                <p>
+                   <table>
+                        <tr ng-repeat="comment_item in comment_items = ColCtrl.filterItemList(report.options.include_comments.stage)">
+                            <td>{{comment_item.title}}</td>
+                            <td>
+                                <div ng-repeat="item_comment in item_comment_list = ColCtrl.findComments(item._id, comment_item._id, report.stage)">
+                                {{item_comment.body}}
+                                </div>
+                            </td>
+                        </tr>
+                    </table> 
+                </p>
+            </div>
+    
+            <div ng-show="item.stage == report.stage && report.options.include_annotations.value && report.options.include_annotations.stage">
+                <h4>{{ExpCtrl.getSection(report.options.include_annotations.stage).settings.items.annotate_title}}</h4>
+                <p class="col-sm-12" ng-repeat="item_annotate in ColCtrl.findAnnotations(item._id, report.options.include_annotations.stage)">
+                    {{item_annotate.body}}                        
+                </p>
+            </div>
+    
+            
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="raw-render-export-subitem.html">
+    <h5>{{subitem.title}}</h5>
+    <p>{{subitem.body}}</p>
+    <p ng-show="subitem.labels[subitem.stage]"><small><strong>tags: </strong>{{subitem.labels[subitem.stage].join(", ")}}</small></p>
+        <div class="panel panel-default" ng-show="subitem.links.length > 0">
+            <h6>Items and links</h6>
+            <ul class="list-unstyled">
+                <li ng-repeat="link in subitem.links">
+                    <a class="item-link" href="{{link.url}}" filetype="{{link.url|extension}}"  target="_blank">
+                        <span class="icon-corner"></span>
+                        {{link.title}}
+                    </a>
+                </li>
+            </ul>
+        </div>           
+    </p>
+</script>
